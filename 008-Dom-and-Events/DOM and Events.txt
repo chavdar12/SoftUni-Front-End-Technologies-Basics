@@ -1,0 +1,163 @@
+DOM and Events
+--------------------------
+1.BOM - Browser Object Model - това, което комуникира с браузъра
+
+window - navigator - screen - document - history - location
+
+2.DOM - Document Object Model - document обекта, можем да създаваме, манипулираме и променяме дадени обекти
+
+let newDiv = document.createElement("div");
+
+document.body.appendChild(newDiv) - закачаме елемента към body-то в html
+
+3. from HTML to DOM Tree - the browser parses HTML and creates a DOM Tree
+
+Document - html - head - body ....
+
+4. DOM Methods - actions you can perform 
+document.getElementByID()
+document.getElementByClassName()
+document.querySelector()
+-------------------------------
+let div1 = document.createElement()
+div1.textContent = "This is div 1"
+document.body.appendChild(div1);
+
+for - цикъл + горе условието
+
+5.DOM API - освен методите, дава ни достъп и до propertyta-та на елементите
+можем да променяме цвета и т.н
+
+6.HTML Elements - elements are js objects with properties and methods
+We can modify them by first selecting the element
+
+6.1
+let parentElement = document.createElement("div");
+parentElement.id = "parentElement";
+parentElement.textContent = "Parent";
+document.body.appendChild(parentElement);
+
+let childElement = document.createElement("div");
+childElement.id = "childElement";
+childElement.textContent = "Child";
+-----------------------------------------
+|parentElement.appendChild(childElement);|
+-----------------------------------------
+6.2
+
+let parent = document.getElementById("parentElement");
+let child = document.getElementById("childElement");
+-----------------------------
+| parent.removeChild(child);|
+-----------------------------
+
+*innerHTML - добавяне на нов html елемент
+*textContent - смяна на текста
+*style.color - смяна на цвета
+*value - смяна на стойността
+
+6.3 Accessing raw HTML
+*innerHTML - показа всички елементи в даде div или нещо друго
+div.innerHTML = "<button>I'm a button<button>" - заменя елементите в div-a с новият елемент(затрива старите елементи)
+ 
+6.4 Accessing element Text
+*textcontent - отново заменя елементите в текста с новият елемент(затрива старите елементи, дори и децата)
+
+7.Targeting Elements - ways to find a certain HTML element in the DOM Tree
+By ID - getElementById()
+By class name - getElementsByClassName()
+By tag name - getElementByTagName()
+By CSS selector - querySelector(), querySelectorAll()
+
+8.HTMLColletion - каква е структурата дали е (span, div и т.н)
+HTMLColletionа тя е жива колекция и е динамичен и отразява промените в документа
+getElementsById - връща HTMLColletion
+getElementsByClassName - връща HTMLColletion
+няма foreach трябва да се работи с for
+НЕ СА МАСИВИ, НО ИМАТ ИНДЕКСИ И МОЖЕМ ДА ГИ ИТЕРИРАМЕ
+МОГАТ ДА СЕ ПРЕВЪРНАТ В МАСИВ:
+
+9.NodeList - показва какво съдържа даденият (span) примерно:(текст, коментар и т.н)
+NodeLista е статичен и не отразява промените направени в документа
+querySelector - връща NodeList
+има вграден foreach 
+НЕ СА МАСИВИ, НО ИМАТ ИНДЕКСИ И МОЖЕМ ДА ГИ ИТЕРИРАМЕ
+
+МОГАТ ДА СЕ ПРЕВЪРНАТ В МАСИВ:
+let nodeList = document.querySelectorAll(".box");
+
+let elementArray = Array.from(nodeList);
+
+console.log(elementArray)
+
+10.Parent & child elements
+let child = document.getElementsById("child");
+
+console.log(child.parentElement)
+И ОБРАТНО МОЖЕМ ДА ВЗЕМЕМ ДЕЦАТА:
+parent.children - връща HTML collection
+
+11.DOM Manipulations
+*appendChild() - накрая на последното дете
+*removeChild() - маха дадено дете
+*replaceChild() - заменя дадено дете
+*prepend() - слага го пред родителя
+*append - може да добавяме няколко елемента
+
+12.Event Object
+
+let button = document.getElementById("button");
+let div = document.getElementById("child");
+
+button.addEventListener("click", (event)=>{
+	div.textContent = "UpdatedChild";
+	console.log(event);
+})
+
+Event:
+Mouse events, Touch, DOM/UI, KEYBOARD, FOCUS, FORM
+click
+mouseover
+mouseout
+mousedown
+mouseup
+
+Target - елемента който е инициирал самото събитие
+Current Target - реферира таргета, към който е закрепен самият event handler
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

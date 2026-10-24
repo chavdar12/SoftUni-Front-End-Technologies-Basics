@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: '**/package-lock.json'
+      - run: npm ci
+      - name: jsdom / node:test suites
+        run: npm test
+      - name: qUnit lessons
+        run: |
+          for dir in 011-qUnit-Introduction 012-Exercise-qUnit; do
+            (cd "$dir" && npm ci && npm test)
+          done
+
+  e2e:
+    name: E2E ${{ matrix.dir }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dir: 015-JS-UI-testings
+            port: 8090
+          - dir: 016-Exercise-JS-UI-testing
+            port: 3001
+            backend: true
+          - dir: 017-Practical-Project-Automated-Testing-of-Single-Page-App-(with qUnit)-1
+            port: 3001
+            backend: true
+          - dir: 020-Exam-Preparation/02.JS-App-For-Testing
+            port: 3001
+            backend: true
+          - dir: 021-Exam-Preparation/Task-2
+            port: 3001
+            backend: true
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: '**/package-lock.json'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Start REST backend (port 3030)
+        if: matrix.backend
+        run: (cd server && nohup node server.js > ../server.log 2>&1 &)
+      - name: Start app
+        run: nohup npx http-server -a localhost -p ${{ matrix.port }} -P "http://localhost:${{ matrix.port }}?" -c-1 -s > http.log 2>&1 &
+      - name: Wait for servers
+        run: |
+          for i in $(seq 30); do
+            curl -sf http://localhost:${{ matrix.port }}/ > /dev/null \
+              && { [ -z "${{ matrix.backend }}" ] || curl -s http://localhost:3030/ > /dev/null; } \
+              && exit 0
+            sleep 1
+          done
+          exit 1
+      - run: npm test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-${{ strategy.job-index }}
+          path: |
+            ${{ matrix.dir }}/test-results
+            ${{ matrix.dir }}/*.log
+          if-no-files-found: ignore

@@ -1,0 +1,15 @@
+{
+  "name": "demoqunit",
+  "version": "1.0.0",
+  "description": "this is a demo project for qunit",
+  "main": "index.js",
+  "scripts": {
+    "test": "qunit"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "qunit": "^2.21.0"
+  }
+}

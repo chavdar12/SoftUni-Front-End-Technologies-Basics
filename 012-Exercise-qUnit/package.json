@@ -1,0 +1,16 @@
+{
+  "name": "13.-qunit---exercises",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "qunit function_and_tests/*_test.js function_and_tests/fakeDelay_tests.js",
+    "test:network": "qunit function_and_tests/fetchData_tests.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "commonjs",
+  "devDependencies": {
+    "qunit": "^2.21.0"
+  }
+}

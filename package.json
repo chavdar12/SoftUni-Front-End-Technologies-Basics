@@ -1,0 +1,10 @@
+{
+  "name": "softuni-front-end-technologies-basics",
+  "private": true,
+  "scripts": {
+    "test": "node --test \"0*/**/*.unit.mjs\""
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
+  }
+}
